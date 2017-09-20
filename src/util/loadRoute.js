@@ -16,7 +16,7 @@ module.exports = function ( app ){
         res.setHeader("Content-Type", "application/json;charset=utf-8");
         next(); 
     });
-    var routePath = resolve( '../routes' );
+    var routePath = resolve( '../mvc/controller' );
     var files = walkSync( routePath );
     files.forEach( f => {
         (require(path.resolve( routePath, f )))( app );
