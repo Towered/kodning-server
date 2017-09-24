@@ -8,10 +8,10 @@ const sequelize = new Sequelize('kodning', 'root', 'root', {
       idle: 10000
     }   
   });   
-
+  
 sequelize.authenticate()
     .then(() => {
-        sequelize.sync();
+        // sequelize.sync();
         console.log('Connection has been established successfully.');
     })
     .catch(err => {
