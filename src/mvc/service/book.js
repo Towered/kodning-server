@@ -27,7 +27,7 @@ module.exports= {
                             exist: false,
                             value: data.dataValues
                         });
-                    });
+                    }).catch( reject );
                 } else {
                     resolve({
                         exist: true,

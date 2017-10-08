@@ -45,4 +45,4 @@ module.exports = app => {
         handler.then( res.jsonSucc )
             .catch( res.jsonDBE );
     });
-}                   
+};             

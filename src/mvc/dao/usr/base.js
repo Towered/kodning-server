@@ -1,32 +1,44 @@
 const Sequelize = require('sequelize');
-const db = require("../../db");
+const db = require("../../../db");
 
-module.exports = db.define('book', {
+module.exports = db.define('usr', {
     id: {
-        type: Sequelize.BIGINT(11), 
+        type: Sequelize.BIGINT(10), 
         autoIncrement:true, 
         primaryKey : true, 
         unique : true
     },
+    uid: {
+        type: Sequelize.STRING,
+        comment: 'uid',
+        allowNull: false
+    },
+    userRole: {
+        type: Sequelize.STRING,
+        comment: "账号类型 1.普通用户 2.虚拟用户 3.内部账户",
+        allowNull: false
+    },
+    //昵称唯一
     nickname: {
         type: Sequelize.STRING,
         comment: "昵称",
         allowNull: false
     },
-    phone: {
+    //手机号唯一
+    phone: {    
         type: Sequelize.STRING,
         comment: "手机号",
         allowNull: false
     },
-    fromGithub: {
-        type: Sequelize.BOOLEAN,
-        comment: "是否来自Github",
+    certificate: {
+        type: Sequelize.STRING,
+        comment: "密码或登陆凭证",
         allowNull: false
     },
-    fromGoogle: {
-        type: Sequelize.BOOLEAN,
-        comment: "是否来自google",
-        allowNull: false  
+    salt: {
+        type: Sequelize.STRING,
+        comment: "密码盐值",
+        allowNull: false
     },
     avatar: {
         type: Sequelize.STRING,
@@ -34,13 +46,8 @@ module.exports = db.define('book', {
         allowNull: false
     },
     integral: {
-        type: Sequelize.INT(6),
+        type: Sequelize.INTEGER,    
         comment: "积分",
-        allowNull: false
-    },
-    isVip: {
-        type: Sequelize.BOOLEAN,
-        comment: "是否为会员",
         allowNull: false
     }
 }, {
