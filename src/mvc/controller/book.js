@@ -1,4 +1,5 @@
 var book = require("../service/book");
+var { paging } = require("../../util");
 
 module.exports = app => {
     app.post('/book/add', ( req, res ) => {
@@ -16,31 +17,15 @@ module.exports = app => {
     }); 
 
     app.get('/book/list', ( req ,res ) => {
-        var pageIndex = 1,
-            limit = 20;
-        if( req.query.pageIndex ){
-            pageIndex = 0 | req.query.pageIndex;
-        }
-        if( req.query.pageNumber ){
-            limit = 0 | req.query.pageNumber;
-        }
-
-        var handler;
-        var offset = (pageIndex - 1) * limit;
+        var handler;    
 
         if( req.query.key && req.query.key.length > 0 ){
-            console.log( req.query.key );
-            handler = book.search({
-                offset,
-                limit,
+            handler = book.search(Object.assign(paging( req ), {
                 key: req.query.key
-            })
+            }));
         }
         else {
-            handler = book.list({
-                offset,
-                limit
-            });
+            handler = book.list(paging( req ));
         }
         handler.then( res.jsonSucc )
             .catch( res.jsonDBE );

@@ -6,7 +6,7 @@ module.exports = app => {
     //添加一个用户
     app.post('/usr/add', ( req, res ) => {
         usr.insert ({
-            uid: uuid( 20 ),
+            uid: uuid( 32 ),
             userRole: req.body.userRole || 1,
             nickname: req.body.nickname,
             phone: req.body.phone,
@@ -26,13 +26,13 @@ module.exports = app => {
             certificate = req.body.certificate;
 
         if( !phone || !certificate ) 
-            return res.jsonDBE({ 'message' : 'params error' });
+            return res.jsonFail({ 'message' : 'params error' });
         
         //判断用户是否存在
         usr.exist({ phone })
             .then( data => {
                 //不存在此用户
-                if( !data ) return res.jsonDBE({ 'message': 'usr not existed' });
+                if( !data ) return res.jsonFail({ 'message': 'usr not existed' });
                 let v = data.dataValues;
                 let uid = v.uid;
                 let _certificate = v.certificate;
@@ -43,7 +43,7 @@ module.exports = app => {
                     .then(({ key }) => {
                         //用户名or密码错误
                         if( key !== _certificate ){
-                            return res.jsonDBE({ 'message': 'usr or pwd error' });
+                            return res.jsonFail({ 'message': 'usr or pwd error' });
                         }
                         //生成32位token
                         let token = uuid( 32 );
@@ -71,17 +71,17 @@ module.exports = app => {
 
     //登出
     app.post('/usr/signout', ( req, res ) => {
-        if( !req.body.uid ) return res.jsonDBE({ 'message': 'params error' });
+        if( !req.body.uid ) return res.jsonFail({ 'message': 'params error' });
         let authToken = req.headers['x-auth-token'];
         if( !authToken ){
-            return res.jsonDBE({ 'message': 'not login' });
+            return res.jsonFail({ 'message': 'not login' });
         }
         //删除redis uid对应的token
         redis.get( req.body.uid )
             .then( token => {
                 //token不匹配可能过期
                 if( authToken !== token ) 
-                    return res.jsonDBE({ 'message': 'token expired' });
+                    return res.jsonFail({ 'message': 'token expired' });
 
                 //匹配成功, 删除对应key
                 redis.del( req.body.uid )

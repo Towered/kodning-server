@@ -44,7 +44,26 @@ function pbkdf ( certificate, salt ){
   });
 }
 
+function paging ( req ){
+    var pageIndex = 1,
+        limit = 20;
+
+    if( req.query.pageIndex ){
+        pageIndex = 0 | req.query.pageIndex;
+    }
+    if( req.query.pageNumber ){
+        limit = 0 | req.query.pageNumber;
+    }
+    var offset = (pageIndex - 1) * limit;
+    
+    return {
+        offset,
+        limit
+    };
+}
+
 module.exports = {
     uuid,
-    pbkdf
+    pbkdf,
+    paging
 };

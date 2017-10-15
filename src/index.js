@@ -3,6 +3,7 @@ const chalk = require("chalk");
 const app = express();
 const config = require("../server.config");
 const loadRoute = require("./util/loadRoute");
+require('./util/alias');
     
 loadRoute( app );
     

@@ -1,22 +1,13 @@
 const { isEmpty } = require('lodash/lang');
 const { pbkdf } = require('../../util');
+const BaseService =  require("./baseService");
 const Usr = require('../dao/usr/base');
 
-module.exports = {
-    /**
-     * @param { object } options
-     * @param { string } options.phone
-     */
-    exist ({ phone }){
-        return Usr.findOne({
-             where: {
-                 phone
-             }
-        });
-    },  
-    /**
-     * @param { object } options 
-     */
+class UsrService extends BaseService {
+    constructor (){
+        super( Usr );
+        super.sole = 'phone';   
+    }
     insert ( options ) {    
         return new Promise(( resolve, reject ) => {
             this.exist( options )
@@ -41,4 +32,6 @@ module.exports = {
                 });
         });
     }
-};
+}
+
+module.exports = new UsrService();
